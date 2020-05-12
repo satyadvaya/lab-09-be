@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 7890;
 
 // get all planets
 app.get('/planets', async(req, res) => {
+
+  console.log(req.headers);
   const data = await client.query('SELECT * from planets');
 
   res.json(data.rows);
@@ -24,7 +26,24 @@ app.get('/planets/:id', async(req, res) => {
     [id]
   );
 
-  res.json(data.rows);
+  res.json(data.rows[0]);
+});
+
+// create a planet
+app.post('/planets/', async(req, res) => {
+  try {
+    const data = await client.query(
+      `insert into planets (name, moons, rings, type, owner_id)
+      values ($1, $2, $3, $4, $5)
+      returning *;`,
+      [req.body.name, req.body.moons, req.body.rings, req.body.type, req.body.owner_id]
+    );
+
+    res.json(data.rows[0]);
+  } catch(e) {
+    console.error(e);
+    res.json(e);
+  }
 });
 
 app.listen(PORT, () => {
