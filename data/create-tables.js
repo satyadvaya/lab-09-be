@@ -23,14 +23,22 @@ async function run() {
                     rings BOOLEAN NOT NULL,
                     type VARCHAR(512) NOT NULL,
                     owner_id INTEGER NOT NULL REFERENCES users(id)
+                );           
+                CREATE TABLE particles (
+                    id SERIAL PRIMARY KEY NOT NULL,
+                    name VARCHAR(512) NOT NULL,
+                    family VARCHAR(512) NOT NULL,
+                    discovered INTEGER NOT NULL
+                    charge VARCHAR(512) NOT NULL,
+                    owner_id INTEGER NOT NULL REFERENCES users(id)
             );
         `);
 
-    console.log('create tables complete');
+    // console.log('create tables complete');
   }
   catch(err) {
     // problem? let's see the error...
-    console.log(err);
+    // console.log(err);
   }
   finally {
     // success or failure, need to close the db connection
